@@ -43,9 +43,9 @@ int write_history(info_t *info)
 	free(filename);
 	if (fd == -1)
 		return (-1);
-	for (node = info->history; node; node = node->next)
+	for (node = info->history; node; node = node->nxt)
 	{
-		_putsfd(node->str, fd);
+		_putsfd(node->st, fd);
 		_putfd('\n', fd);
 	}
 	_putfd(BUF_FLUSH, fd);
@@ -116,7 +116,7 @@ int build_history_list(info_t *info, char *buf, int linecount)
 
 	if (info->history)
 		node = info->history;
-	add_node_end(&node, buf, linecount);
+	add_nod_end(&node, buf, linecount);
 
 	if (!info->history)
 		info->history = node;
@@ -137,9 +137,7 @@ int renumber_history(info_t *info)
 	while (node)
 	{
 		node->num = i++;
-		node = node->next;
+		node = node->nxt;
 	}
 	return (info->histcount = i);
 }
-
-

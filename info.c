@@ -8,7 +8,7 @@ void clear_info(info_t *info)
 {
 	info->arg = NULL;
 	info->argv = NULL;
-	info->path = NULL;
+	info->pth = NULL;
 	info->argc = 0;
 }
 
@@ -53,7 +53,7 @@ void free_info(info_t *info, int all)
 {
 	ffree(info->argv);
 	info->argv = NULL;
-	info->path = NULL;
+	info->pth = NULL;
 	if (all)
 	{
 		if (!info->cmd_buf)
@@ -72,6 +72,3 @@ void free_info(info_t *info, int all)
 		_putchar(BUF_FLUSH);
 	}
 }
-
-
-
