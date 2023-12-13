@@ -32,12 +32,12 @@ int hsh(info_t *info, char **av)
 	}
 	write_history(info);
 	free_info(info, 1);
-	if (!interactive(info) && info->status)
-		exit(info->status);
+	if (!interactive(info) && info->stus)
+		exit(info->stus);
 	if (builtin_ret == -2)
 	{
 		if (info->err_num == -1)
-			exit(info->status);
+			exit(info->stus);
 		exit(info->err_num);
 	}
 	return (builtin_ret);
@@ -88,7 +88,7 @@ void find_cmd(info_t *info)
 	char *path = NULL;
 	int i, k;
 
-	info->path = info->argv[0];
+	info->pth = info->argv[0];
 	if (info->linecount_flag == 1)
 	{
 		info->line_count++;
@@ -103,7 +103,7 @@ void find_cmd(info_t *info)
 	path = find_path(info, _getenv(info, "PATH="), info->argv[0]);
 	if (path)
 	{
-		info->path = path;
+		info->pth = path;
 		fork_cmd(info);
 	}
 	else
@@ -113,7 +113,7 @@ void find_cmd(info_t *info)
 			fork_cmd(info);
 		else if (*(info->arg) != '\n')
 		{
-			info->status = 127;
+			info->stus = 127;
 			print_error(info, "not found\n");
 		}
 	}
@@ -138,7 +138,7 @@ void fork_cmd(info_t *info)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(info->path, info->argv, get_environ(info)) == -1)
+		if (execve(info->pth, info->argv, get_environ(info)) == -1)
 		{
 			free_info(info, 1);
 			if (errno == EACCES)
@@ -149,14 +149,12 @@ void fork_cmd(info_t *info)
 	}
 	else
 	{
-		wait(&(info->status));
-		if (WIFEXITED(info->status))
+		wait(&(info->stus));
+		if (WIFEXITED(info->stus))
 		{
-			info->status = WEXITSTATUS(info->status);
-			if (info->status == 126)
+			info->stus = WEXITSTATUS(info->stus);
+			if (info->stus == 126)
 				print_error(info, "Permission denied\n");
 		}
 	}
 }
-
-
