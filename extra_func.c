@@ -6,7 +6,7 @@
  *
  * Return: 1 if interactive mode, 0 otherwise
  */
-int interact(nfo_t *nfo)
+int interact(info_t *nfo)
 {
 	return (isatty(STDIN_FILENO) && nfo->readfd <= 2);
 }

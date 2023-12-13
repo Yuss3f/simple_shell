@@ -12,7 +12,7 @@ size_t lst_len(const list_t *hd)
 
 	while (hd)
 	{
-		hd = hd->next;
+		hd = hd->nxt;
 		i++;
 	}
 	return (i);
@@ -27,7 +27,7 @@ size_t lst_len(const list_t *hd)
 char **lst_to_strings(list_t *hd)
 {
 	list_t *node = hd;
-	size_t i = list_len(hd), j;
+	size_t i = lst_len(hd), j;
 	char **strs;
 	char *str;
 
@@ -36,9 +36,9 @@ char **lst_to_strings(list_t *hd)
 	strs = malloc(sizeof(char *) * (i + 1));
 	if (!strs)
 		return (NULL);
-	for (i = 0; node; node = node->next, i++)
+	for (i = 0; node; node = node->nxt, i++)
 	{
-		str = malloc(_strlen(node->str) + 1);
+		str = malloc(_strlen(node->st) + 1);
 		if (!str)
 		{
 			for (j = 0; j < i; j++)
@@ -47,7 +47,7 @@ char **lst_to_strings(list_t *hd)
 			return (NULL);
 		}
 
-		str = _strcpy(str, node->str);
+		str = _strcpy(str, node->st);
 		strs[i] = str;
 	}
 	strs[i] = NULL;
@@ -70,9 +70,9 @@ size_t print_lst(const list_t *hd)
 		_puts(convert_number(hd->num, 10, 0));
 		_putchar(':');
 		_putchar(' ');
-		_puts(hd->str ? hd->str : "(nil)");
+		_puts(hd->st ? hd->st : "(nil)");
 		_puts("\n");
-		hd = hd->next;
+		hd = hd->nxt;
 		i++;
 	}
 	return (i);
@@ -92,10 +92,10 @@ list_t *nod_start_with(list_t *n, char *prfx, char ch)
 
 	while (n)
 	{
-		p = starts_with(n->str, prfx);
+		p = starts_with(n->st, prfx);
 		if (p && ((ch == -1) || (*p == ch)))
 			return (n);
-		n = n->next;
+		n = n->nxt;
 	}
 	return (NULL);
 }
@@ -115,7 +115,7 @@ ssize_t get_nod_idx(list_t *hd, list_t *n)
 	{
 		if (hd == n)
 			return (i);
-		hd = hd->next;
+		hd = hd->nxt;
 		i++;
 	}
 	return (-1);
